@@ -1,10 +1,23 @@
 export namespace Data {
 	
+	export class KudosDetails {
+	    generated: number;
+	    uptime: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new KudosDetails(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.generated = source["generated"];
+	        this.uptime = source["uptime"];
+	    }
+	}
 	export class WorkerInfo {
 	    requests_fulfilled: number;
 	    kudos_rewards: number;
-	    // Go type: struct { Generated float64 "json:\"generated\""; Uptime int "json:\"uptime\"" }
-	    kudos_details: any;
+	    kudos_details: KudosDetails;
 	    performance: string;
 	    threads: number;
 	    uptime: number;
@@ -34,7 +47,7 @@ export namespace Data {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.requests_fulfilled = source["requests_fulfilled"];
 	        this.kudos_rewards = source["kudos_rewards"];
-	        this.kudos_details = this.convertValues(source["kudos_details"], Object);
+	        this.kudos_details = this.convertValues(source["kudos_details"], KudosDetails);
 	        this.performance = source["performance"];
 	        this.threads = source["threads"];
 	        this.uptime = source["uptime"];

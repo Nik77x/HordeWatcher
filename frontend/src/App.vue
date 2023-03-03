@@ -2,18 +2,7 @@
   <main class='root'>
     <Sidebar></Sidebar>
     <div class='main-content'>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
-      <div class='block'></div>
+      <WorkerCard v-for='wi in workerInfos' :key='wi.id' :worker-info='wi'></WorkerCard>
 
 
     </div>
@@ -26,12 +15,13 @@ import { ref } from 'vue'
 import { EventsOn } from '@/wailsjs/runtime'
 import type { Data } from './wailsjs/go/models'
 import Sidebar from '@/components/Sidebar.vue'
+import WorkerCard from '@/components/WorkerCard.vue'
 
-let name = ref<string>()
+let workerInfos = ref<Data.WorkerInfo[]>([])
 
 EventsOn('update_list', (wi: Data.WorkerInfo[]) => {
 
-  name.value = wi[0].name
+  workerInfos.value = wi
 
 })
 
@@ -59,15 +49,9 @@ EventsOn('update_list', (wi: Data.WorkerInfo[]) => {
   flex-wrap: wrap;
   align-content: start;
   overflow: auto;
+  padding-bottom: 15px;
 }
 
-.block {
-  width: 250px;
-  height: 170px;
-  margin: 5px;
-  border-radius: 5px;
-  background-color: #282828;
-}
 
 header {
   line-height: 1.5;

@@ -4,7 +4,11 @@ import (
 	"time"
 )
 
-func RunFuncAtInterval(delay int, function func()) chan<- struct{} {
+func RunFuncAtInterval(delay int, function func(), runInstantly bool) chan<- struct{} {
+
+	if runInstantly {
+		function()
+	}
 
 	ticker := time.NewTicker(time.Duration(delay) * time.Millisecond)
 

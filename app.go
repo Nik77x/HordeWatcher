@@ -6,7 +6,6 @@ import (
 	"KAIWorkerViz/beckend/httpClient"
 	"context"
 	"fmt"
-	"github.com/muesli/termenv"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -44,14 +43,14 @@ func (a *App) domReady(ctx context.Context) {
 		if err != nil {
 			runtime.LogDebugf(a.ctx, err.Error())
 		}
-		termenv.ClearScreen()
-		for i, info := range *workersInfo {
-			runtime.LogDebugf(a.ctx, "Worker %v, name: %q, model: %q, req pending: %v, uptime %vm", i, info.Name, info.Models[0], info.UncompletedJobs, info.Uptime)
-		}
+		//termenv.ClearScreen()
+		//for i, info := range *workersInfo {
+		//	runtime.LogDebugf(a.ctx, "Worker %v, name: %q, model: %q, req pending: %v, uptime %vm", i, info.Name, info.Models[0], info.UncompletedJobs, info.Uptime)
+		//}
 
 		runtime.EventsEmit(a.ctx, "update_list", *workersInfo)
 
-	})
+	}, true)
 }
 
 func (a *App) Greet(name string) string {
