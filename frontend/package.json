@@ -1,6 +1,6 @@
 {
-  "name": "workervizfe",
-  "version": "0.0.0",
+  "name": "hordewatcherfe",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "fontawesome-free": "^1.0.4",
+    "pinia": "^2.0.32",
     "sass": "^1.58.3",
     "vue": "^3.2.47"
   },

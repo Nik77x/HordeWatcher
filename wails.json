@@ -1,7 +1,7 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "KAIWorkerViz",
-  "outputfilename": "KAIWorkerViz",
+  "name": "HordeWatcher",
+  "outputfilename": "HordeWatcher",
   "assetdir": "frontend/dist",
   "wailsjsdir": "frontend/src",
   "frontend:install": "npm install",

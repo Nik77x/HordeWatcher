@@ -5,13 +5,13 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME "KAIWorkerViz"
+    !define INFO_PROJECTNAME "HordeWatcher"
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "KAIWorkerViz"
+    !define INFO_COMPANYNAME "HordeWatcher"
 !endif
 !ifndef INFO_PRODUCTNAME
-    !define INFO_PRODUCTNAME "KAIWorkerViz"
+    !define INFO_PRODUCTNAME "HordeWatcher"
 !endif
 !ifndef INFO_PRODUCTVERSION
     !define INFO_PRODUCTVERSION "1.0.0"
