@@ -1,23 +1,30 @@
 <template>
   <main class='root'>
     <Sidebar></Sidebar>
-    <div class='main-content'>
-      <WorkerCard v-for='wi in workerInfos' :key='wi.id' :worker-info='wi'></WorkerCard>
-
-
-    </div>
+    <TransitionGroup class='main-content' name='list' tag='div'>
+      <WorkerCard v-for='wi in sortedWorkerInfos' :key='wi.id' :worker-info='wi'></WorkerCard>
+    </TransitionGroup>
   </main>
 </template>
 
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { EventsOn } from '@/wailsjs/runtime'
 import type { Data } from './wailsjs/go/models'
 import Sidebar from '@/components/Sidebar.vue'
 import WorkerCard from '@/components/WorkerCard.vue'
+import Sorter from '@/sorting/Sorter'
+import { useSortingModeStore } from '@/Store/Store'
 
 let workerInfos = ref<Data.WorkerInfo[]>([])
+const sortingStore = useSortingModeStore()
+
+let sorter = new Sorter()
+
+const sortedWorkerInfos = computed(() => {
+  return sorter.sort([...workerInfos.value], sortingStore.sortingMode, sortingStore.invert)
+})
 
 EventsOn('update_list', (wi: Data.WorkerInfo[]) => {
 
@@ -30,6 +37,25 @@ EventsOn('update_list', (wi: Data.WorkerInfo[]) => {
 
 
 <style scoped>
+
+
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: absolute;
+}
 
 .root {
   display: flex;

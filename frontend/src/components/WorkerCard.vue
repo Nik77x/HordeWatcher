@@ -202,7 +202,7 @@ function setJobsColor(jobsNum: number) {
   margin: 3px;
   height: 100%;
 
-  grid-template-columns: repeat(v-bind(columns), minmax(100px, 1fr));
+  grid-template-columns: repeat(v-bind("columns / 2"), minmax(130px, 1fr) minmax(0, 1.5fr));
   grid-template-rows: repeat(v-bind(rows), minmax(20px, 1fr)); // 1fr 1fr 1fr 1fr; //;
   align-content: center;
   justify-items: left;
@@ -227,9 +227,10 @@ p {
 
     color: #2978ff;
     text-overflow: ellipsis;
+    text-align: start;
     align-self: start;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: v-bind("expanded ? 'break-spaces' : 'nowrap'");
     font-size: 15px;
   }
 

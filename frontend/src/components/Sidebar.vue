@@ -1,7 +1,8 @@
 <template>
 
   <div class='sb-content'>
-    <button>
+    <sorting-mode-selector></sorting-mode-selector>
+    <button class='btn-settings'>
       <font-awesome-icon class='icon' icon='fa-solid fa-gear' fixed-width inverse transform='grow-40 rotate-30' />
     </button>
   </div>
@@ -16,18 +17,23 @@ export default {
 <script lang='ts' setup>
 
 
+import SortingModeSelector from '@/components/SortingModeSelector.vue'
 </script>
 
 <style scoped lang='scss'>
 
-button {
+:deep(button) {
 
   width: 100%;
   background-color: transparent;
   border: transparent;
   aspect-ratio: 1;
-  margin: auto 0 0;
+
   transition: background-color 0.2s;
+
+  &.btn-settings {
+    margin: auto 0 0;
+  }
 
   &:hover {
 
@@ -51,6 +57,7 @@ button {
 
   display: flex;
   flex-flow: column;
+  justify-content: start;
   align-items: start;
 
 
