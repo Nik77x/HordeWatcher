@@ -2,9 +2,6 @@
 
   <div class='sb-content'>
     <sorting-mode-selector></sorting-mode-selector>
-    <button class='btn-settings'>
-      <font-awesome-icon class='icon' icon='fa-solid fa-gear' fixed-width inverse transform='grow-40 rotate-30' />
-    </button>
   </div>
 </template>
 
