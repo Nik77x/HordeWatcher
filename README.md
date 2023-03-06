@@ -10,6 +10,9 @@
 
 https://user-images.githubusercontent.com/53407674/223243364-70b58d84-6c2c-4b8e-88cb-2fb6d3978bd3.mp4
 
+
+(btw 2080 TI 8bit it's my pc)
+
 # What it does
 
 For now it shows all the text-based clients connected to the horde and shows most of the information contained in the API. I left out some stuff that i thought was useless. I'll probalbly add more things and change some stuff, like showing the kudos better or colorizing all the properties, that's for 1.0.
