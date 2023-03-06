@@ -65,6 +65,8 @@ import SortingModeSelector from '@/components/SortingModeSelector.vue'
   width: 70px;
   max-width: 70px;
 
+  z-index: 5;
+
 }
 
 </style>

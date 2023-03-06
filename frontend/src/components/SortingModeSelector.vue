@@ -1,23 +1,27 @@
 <template>
+
   <button class='open-button' @click='toggleMenu'>
     <font-awesome-icon icon='fa-solid fa-bars-staggered' inverse transform='grow-40' />
   </button>
-
-  <div class='sort-menu' v-if='isMenuOpen' v-on:mouseleave='toggleMenu'>
-    <p>Sorting Mode: </p>
-    <select class='selector' v-model='sortingStore.sortingMode'>
-      <option :value='SortingMode.Performance'>Performance</option>
-      <option :value='SortingMode.Uptime'>Uptime</option>
-      <option :value='SortingMode.GenLength'>GenLength</option>
-      <option :value='SortingMode.ContextSize'>ContextSize</option>
-      <option :value='SortingMode.Jobs'>Jobs</option>
-      <option :value='SortingMode.Kudos'>Kudos</option>
-    </select>
-    <span>
-      <input type='checkbox' v-model='sortingStore.invert'>
-      <p>Invert</p>
+  <transition>
+    <div class='sort-menu' v-if='isMenuOpen' v-on:mouseleave='closeMenu' v-on:mouseenter='keepOpen'>
+      <p>Sorting Mode: </p>
+      <select class='selector' v-model='sortingStore.sortingMode'>
+        <option :value='SortingMode.Performance'>Performance</option>
+        <option :value='SortingMode.Uptime'>Uptime</option>
+        <option :value='SortingMode.GenLength'>GenLength</option>
+        <option :value='SortingMode.ContextSize'>ContextSize</option>
+        <option :value='SortingMode.Jobs'>Jobs</option>
+        <option :value='SortingMode.Kudos'>Kudos</option>
+      </select>
+      <span>
+        <label class='chk-label'>
+          <input type='checkbox' v-model='sortingStore.invert'>
+          Invert
+        </label>
     </span>
-  </div>
+    </div>
+  </transition>
 
 </template>
 
@@ -37,8 +41,23 @@ const sortingStore = useSortingModeStore()
 
 const isMenuOpen = ref(false)
 
+let doClose: boolean = false
+
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
+}
+
+function closeMenu() {
+  doClose = true
+  setTimeout(() => {
+    if (doClose)
+      isMenuOpen.value = false
+  }, 600)
+
+}
+
+function keepOpen() {
+  doClose = false
 }
 
 
@@ -46,12 +65,17 @@ function toggleMenu() {
 
 <style scoped lang='scss'>
 
+
+input[type="checkbox"]:checked {
+  background-color: red;
+}
+
+
 .sort-menu {
   position: absolute;
   left: 75px;
   top: 5px;
 
-  z-index: 10;
   width: 156px;
   border-radius: 12px;
   height: 110px;
@@ -60,10 +84,25 @@ function toggleMenu() {
   border: solid 2px #1d4086;
   vertical-align: center;
 
+  z-index: 0;
   padding: 10px;
 
   display: flex;
   flex-flow: column;
+
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.3s ease;
+  pointer-events: none
+}
+
+.v-enter-from,
+.v-leave-to {
+
+  opacity: 0;
+  transform: translateX(-50px);
 
 }
 
@@ -76,13 +115,12 @@ span {
   flex-flow: row;
 
   input[type="checkbox"] {
-    margin-right: 10px;
+    margin-right: 5px;
 
     &:checked {
       background-color: #3473ef;
     }
   }
-
 }
 
 .selector {

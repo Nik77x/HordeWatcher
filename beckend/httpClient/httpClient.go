@@ -25,17 +25,18 @@ func NewClient(ctx context.Context) Client {
 
 func (c Client) GetJson(url string) (*[]Data.WorkerInfo, error) {
 	r, err := c.client.Get(url)
+	defer r.Body.Close()
+
 	if err != nil {
 
 		runtime.LogDebugf(c.ctx, "Failed to get url: %q", err.Error())
 		return nil, err
 	}
 
-	defer r.Body.Close()
-
 	var outInfo []Data.WorkerInfo
 
 	err = json.NewDecoder(r.Body).Decode(&outInfo)
+
 	if err != nil {
 		runtime.LogDebugf(c.ctx, "Failed to decode json!:\n%v", err.Error())
 		return nil, err

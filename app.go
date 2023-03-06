@@ -5,7 +5,6 @@ import (
 	"KAIWorkerViz/beckend/Data"
 	"KAIWorkerViz/beckend/httpClient"
 	"context"
-	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -38,22 +37,19 @@ func (a *App) domReady(ctx context.Context) {
 	// check for duplicates?
 	// send to frontend
 
-	backend.RunFuncAtInterval(1000, func() {
+	backend.RunFuncAtInterval(3000, func() {
 		workersInfo, err := a.client.GetJson("https://stablehorde.net/api/v2/workers?type=text")
 		if err != nil {
+			panic(err.Error())
 			runtime.LogDebugf(a.ctx, err.Error())
+		} else {
+			runtime.EventsEmit(a.ctx, "update_list", *workersInfo)
 		}
-
-		runtime.EventsEmit(a.ctx, "update_list", *workersInfo)
 
 	}, true)
 }
 
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
-func (a App) GetCurrentWorkers() []Data.WorkerInfo {
+func (a *App) GetCurrentWorkers() []Data.WorkerInfo {
 	wi, err := a.client.GetJson("https://stablehorde.net/api/v2/workers?type=text")
 	if err != nil {
 		return nil
