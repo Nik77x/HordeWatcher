@@ -25,4 +25,4 @@ I got tired of staring at plain json from the [API URL](https://aihorde.net/api/
 
 ## More stuff
 
-This app was coded to [Dief](https://c418.bandcamp.com/album/dief) by C418, you should check it out if you like chill music!
+This app was coded to [Dief](https://open.spotify.com/album/0oZiDBfoqJTgIcPdCfVGSQ) by C418, you should check it out if you like chill music!
