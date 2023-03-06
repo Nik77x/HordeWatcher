@@ -11,5 +11,9 @@
   "author": {
     "name": "nik77",
     "email": "niktornado77@gmail.com"
+  },
+  "Info": {
+    "productName": "HordeWatcher",
+    "productVersion": "0.1.0"
   }
 }

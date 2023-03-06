@@ -30,12 +30,11 @@ func main() {
 		OnDomReady:       app.domReady,
 		Bind: []interface{}{
 			app,
-			//&Data.WorkerInfo{},
 		},
 		// Windows platform specific options
 		Windows: &windows.Options{
 			WebviewIsTransparent: false,
-			WindowIsTranslucent:  true,
+			WindowIsTranslucent:  false,
 			DisableWindowIcon:    false,
 		},
 	})
