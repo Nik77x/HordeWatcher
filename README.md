@@ -8,10 +8,8 @@
 
 ## Video show-off
 
-https://user-images.githubusercontent.com/53407674/223243364-70b58d84-6c2c-4b8e-88cb-2fb6d3978bd3.mp4
-
-
-(btw 2080 TI 8bit it's my pc)
+https://user-images.githubusercontent.com/53407674/223495914-d5304e4e-ee96-4f4e-89fe-6b96c39de2d4.mp4
+###### (btw 2080 TI 8bit it's my pc)
 
 # What it does
 
