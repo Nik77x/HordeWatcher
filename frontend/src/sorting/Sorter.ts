@@ -1,16 +1,12 @@
 import { SortingMode } from '@/sorting/SortingMode'
-import type { Data } from '@/wailsjs/go/models'
+import type { AIWorker } from '@/common/AIWorker'
 
 export class Sorter {
-  sort(wis: Data.WorkerInfo[], mode: SortingMode, invert: boolean): Data.WorkerInfo[] {
+  sort(wis: AIWorker[], mode: SortingMode, invert: boolean): AIWorker[] {
     return this.NumberSort(wis, (wi) => this.getSortValue(wi, mode), invert)
   }
 
-  NumberSort(
-    arr: Data.WorkerInfo[],
-    getSortValue: (wi: Data.WorkerInfo) => number,
-    invert: boolean
-  ): Data.WorkerInfo[] {
+  NumberSort(arr: AIWorker[], getSortValue: (wi: AIWorker) => number, invert: boolean): AIWorker[] {
     return arr.sort((a, b) => {
       let val = getSortValue(b) - getSortValue(a)
       if (invert) val *= -1
@@ -18,21 +14,22 @@ export class Sorter {
     })
   }
 
-  getSortValue(wi: Data.WorkerInfo, mode: SortingMode): number {
+  getSortValue(wi: AIWorker, mode: SortingMode): number {
     switch (mode) {
       case SortingMode.Uptime:
         return wi.uptime
-      case SortingMode.Performance:
+      case SortingMode.Performance: {
         // remove useless text from the json then parse
-        return parseFloat(wi.performance.replace(' tokens per second', ''))
-      case SortingMode.Jobs:
-        return wi.uncompleted_jobs
+        const searchPattern = RegExp('[0-9.]')
+        const val = searchPattern.exec(wi.performance)
+        if (val) return parseFloat(val[0])
+        else return -1
+      }
+
       case SortingMode.Kudos:
-        return wi.kudos_details.generated
-      case SortingMode.GenLength:
-        return wi.max_length
-      case SortingMode.ContextSize:
-        return wi.max_context_length
+        return wi.kudos_rewards
+      default:
+        return -1
     }
   }
 }

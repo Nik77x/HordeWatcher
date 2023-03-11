@@ -1,6 +1,6 @@
 <template>
   <div class='card' :style='{width: width + "px", height: height + "px"}'>
-    <h1 class='title'> {{ props.workerInfo.name }}</h1>
+    <h1 class='title'> {{ props.workerData.name }}</h1>
 
     <div class='content'>
       <p class='content-text'>model: </p>
@@ -10,27 +10,31 @@
       </button>
 
 
-      <p class='content-text'>Uncompleted Jobs: </p>
-      <p class='jobs-text'> {{ UncompletedJobs }}</p>
+      <p class='content-text'>Queue: </p>
+      <p class='content-text'> {{ props.workerData.queue }}</p>
       <p class='content-text'>tokens / sec: </p>
-      <p class='performance-value'> {{ tokensSec }} </p>
+      <p class='performance-value'> {{ performance }} </p>
       <p class='content-text'>Uptime: </p>
+      <p class='content-text'> {{ uptime }} </p>
 
-      <p>{{ uptime }}</p>
 
       <template v-if='expanded'>
         <p>Max Generation Length: </p>
-        <p>{{ props.workerInfo.max_length }} tokens</p>
+        <p>{{ 'no' }} tokens</p>
         <p>Context Size: </p>
-        <p>{{ props.workerInfo.max_context_length }} tokens</p>
+        <p>{{ 'no' }} tokens</p>
         <p>Type: </p>
-        <p>{{ props.workerInfo.type }}</p>
+        <p>{{ props.workerData.type }}</p>
         <p>Kudos: </p>
-        <p>{{ props.workerInfo.kudos_rewards }}</p>
+        <p>{{ props.workerData.kudos_rewards }}</p>
         <p>Online: </p>
-        <p>{{ props.workerInfo.online ? 'Yes' : 'No' }}</p>
-        <p>Generated kudos: </p>
-        <p>{{ props.workerInfo.kudos_details.uptime }}</p>
+        <p>{{ props.workerData.online ? 'Yes' : 'No' }}</p>
+        <p>Requests fullfilled: </p>
+        <p>{{ props.workerData.requests_fulfilled }}</p>
+        <p>MMode: </p>
+        <p>{{ props.workerData.maintenance_mode }}</p>
+        <p></p>
+        <p></p>
       </template>
 
 
@@ -50,47 +54,52 @@ export default {
 </script>
 
 <script setup lang='ts'>
-import { Data } from '@/wailsjs/go/models'
+
 import { computed, ref } from 'vue'
+import type { AIWorker } from '@/common/AIWorker'
 import { BrowserOpenURL } from '@/wailsjs/runtime'
 
-const props = defineProps({
-  workerInfo: { type: Data.WorkerInfo, required: true }
-})
+const props = defineProps<{
+  workerData: AIWorker
+}>()
 
 const modelName = computed(() => {
 
-  const name = props.workerInfo?.models[0].split('/')
+  const name = props.workerData.models[0].split('/')
   if (name.length > 1) {
     return name[1]
   }
   return name[0]
 })
 
-const tokensSec = computed(() => {
-  if (!props.workerInfo) return ''
+const performance = computed(() => {
+  const match = /[0-9.]/
+  const perfOut = match.exec(props.workerData.performance)
+  if (!perfOut) return -1
 
-  let perfOut = props.workerInfo.performance.replace(' tokens per second', '')
-  let num = parseFloat(perfOut)
+  const num = parseFloat(perfOut[0])
   if (isNaN(num)) {
     return perfOut
   }
+
+
   SetPerfColor(num)
-  return perfOut + ' tokens / sec'
+  const perfValue = props.workerData.type == 'text' ? ' tokens / sec' : 'MPS / sec'
+  return perfOut + perfValue
 
 
 })
 
 const UncompletedJobs = computed(() => {
-  if (!props.workerInfo) return 0
-  let jobsNum = props.workerInfo.uncompleted_jobs
+  if (!props.workerData) return 0
+  let jobsNum = props.workerData.uncompleted_jobs
   setJobsColor(jobsNum)
   return jobsNum
 })
 
 const uptime = computed(() => {
-  if (!props.workerInfo) return 0
-  let uptimeMinutes = (props.workerInfo.uptime / 60)
+  if (!props.workerData) return 0
+  let uptimeMinutes = (props.workerData.uptime / 60)
   if (uptimeMinutes > 60) {
     return (uptimeMinutes / 60).toFixed(1) + ' h'
   }
@@ -98,11 +107,9 @@ const uptime = computed(() => {
 })
 
 function openModelPage() {
-  if (!props.workerInfo) return
+  if (!props.workerData) return
 
-  if (props.workerInfo.models[0].split('/').length > 1)
-    BrowserOpenURL('https://huggingface.co/' + props.workerInfo.models[0])
-  else BrowserOpenURL('https://www.google.com/search?q=' + props.workerInfo.models[0] + '+huggingface')
+  else BrowserOpenURL('https://www.google.com/search?q=site:https://huggingface.co/ ' + props.workerData.models[0])
 }
 
 
@@ -179,7 +186,7 @@ function setJobsColor(jobsNum: number) {
   transition-property: height, width;
   transition-duration: 0.3s;
   overflow: hidden;
-  box-shadow: 0px 3px 7px black;
+  box-shadow: 0 3px 7px black;
 
 }
 

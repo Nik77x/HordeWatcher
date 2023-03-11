@@ -9,8 +9,6 @@
       <select class='selector' v-model='sortingStore.sortingMode'>
         <option :value='SortingMode.Performance'>Performance</option>
         <option :value='SortingMode.Uptime'>Uptime</option>
-        <option :value='SortingMode.GenLength'>GenLength</option>
-        <option :value='SortingMode.ContextSize'>ContextSize</option>
         <option :value='SortingMode.Jobs'>Jobs</option>
         <option :value='SortingMode.Kudos'>Kudos</option>
       </select>

@@ -2,33 +2,38 @@
   <main class='root'>
     <Sidebar></Sidebar>
     <TransitionGroup class='main-content' name='list' tag='div'>
-      <WorkerCard v-for='wi in sortedWorkerInfos' :key='wi.id' :worker-info='wi'></WorkerCard>
+      <WorkerCard v-for='wi in sortedWorkers' :key='wi.id' :worker-data='wi'></WorkerCard>
     </TransitionGroup>
   </main>
 </template>
 
 
 <script lang='ts' setup>
+import type { AIWorker } from '@/common/AIWorker'
 import { computed, ref } from 'vue'
-import { EventsOn } from '@/wailsjs/runtime'
-import type { Data } from './wailsjs/go/models'
+import { EventsOn, LogDebug } from '@/wailsjs/runtime'
 import Sidebar from '@/components/Sidebar.vue'
 import WorkerCard from '@/components/WorkerCard.vue'
 import Sorter from '@/sorting/Sorter'
 import { useSortingModeStore } from '@/Store/Store'
+import type { data } from '@/wailsjs/go/models'
 
-let workerInfos = ref<Data.WorkerInfo[]>([])
+const workers = ref<AIWorker[]>([])
 const sortingStore = useSortingModeStore()
+const sorter = new Sorter()
 
-let sorter = new Sorter()
-
-const sortedWorkerInfos = computed(() => {
-  return sorter.sort([...workerInfos.value], sortingStore.sortingMode, sortingStore.invert)
+const sortedWorkers = computed(() => {
+  if (workers.value)
+    return sorter.sort([...workers.value], sortingStore.sortingMode, sortingStore.invert)
 })
 
-EventsOn('update_list', (wi: Data.WorkerInfo[]) => {
-
-  workerInfos.value = wi
+EventsOn('update_list', (textWorkers: data.TextWorker[], imageWorkers: data.ImageWorker[]) => {
+  let time = Date.now()
+  workers.value = [] as AIWorker[]
+  workers.value.push(...textWorkers)
+  workers.value.push(...imageWorkers)
+  time = Date.now() - time
+  LogDebug(`List refresh took: ${time}ms`)
 
 })
 

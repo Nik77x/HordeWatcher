@@ -43,9 +43,6 @@ import SortingModeSelector from '@/components/SortingModeSelector.vue'
 .icon {
   width: 100%;
   aspect-ratio: 1;
-
-  width: 100%;
-  aspect-ratio: 1;
   margin: 0;
 }
 
