@@ -18,4 +18,6 @@ library.add(faUserSecret, faGear, faGears, faChevronDown, faBarsStaggered)
 
 const pinia = createPinia()
 
-const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon).use(pinia).mount('#app')
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
+app.use(pinia)
+app.mount('#app')

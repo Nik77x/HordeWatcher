@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { SortingMode } from '@/sorting/SortingMode'
+import { SortingMode } from '@/menus/sorting/SortingMode'
 import { ref } from 'vue'
 
 export const useSortingModeStore = defineStore('sortingModes', () => {

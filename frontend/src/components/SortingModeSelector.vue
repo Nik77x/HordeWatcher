@@ -1,38 +1,37 @@
 <template>
-
-  <button class='open-button' @click='toggleMenu'>
-    <font-awesome-icon icon='fa-solid fa-bars-staggered' inverse transform='grow-40' />
+  <button class="open-button" @click="toggleMenu">
+    <font-awesome-icon icon="fa-solid fa-bars-staggered" inverse transform="grow-40" />
   </button>
   <transition>
-    <div class='sort-menu' v-if='isMenuOpen' v-on:mouseleave='closeMenu' v-on:mouseenter='keepOpen'>
-      <p>Sorting Mode: </p>
-      <select class='selector' v-model='sortingStore.sortingMode'>
-        <option :value='SortingMode.Performance'>Performance</option>
-        <option :value='SortingMode.Uptime'>Uptime</option>
-        <option :value='SortingMode.Jobs'>Jobs</option>
-        <option :value='SortingMode.Kudos'>Kudos</option>
+    <div class="sort-menu" v-if="isMenuOpen" v-on-click-outside="closeMenu">
+      <p>Sorting Mode:</p>
+      <select class="selector" v-model="sortingStore.sortingMode">
+        <option :value="SortingMode.Performance">Performance</option>
+        <option :value="SortingMode.Uptime">Uptime</option>
+        <option :value="SortingMode.Jobs">Jobs</option>
+        <option :value="SortingMode.Kudos">Kudos</option>
       </select>
       <span>
-        <label class='chk-label'>
-          <input type='checkbox' v-model='sortingStore.invert'>
+        <label class="chk-label">
+          <input type="checkbox" v-model="sortingStore.invert" />
           Invert
         </label>
-    </span>
+      </span>
     </div>
   </transition>
-
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 export default {
   name: 'SortingModeSelector'
 }
 </script>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { useSortingModeStore } from '@/Store/Store'
-import { SortingMode } from '@/sorting/SortingMode'
+import { SortingMode } from '@/menus/sorting/SortingMode'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { vOnClickOutside } from '@vueuse/components'
 import { ref } from 'vue'
 
 const sortingStore = useSortingModeStore()
@@ -45,29 +44,26 @@ function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
 }
 
+// function closeMenu() {
+//   doClose = true
+//   setTimeout(() => {
+//     if (doClose) isMenuOpen.value = false
+//   }, 600)
+// }
+
 function closeMenu() {
-  doClose = true
-  setTimeout(() => {
-    if (doClose)
-      isMenuOpen.value = false
-  }, 600)
-
+  isMenuOpen.value = false
 }
 
-function keepOpen() {
-  doClose = false
-}
-
-
+// function keepOpen() {
+//   doClose = false
+// }
 </script>
 
-<style scoped lang='scss'>
-
-
-input[type="checkbox"]:checked {
+<style scoped lang="scss">
+input[type='checkbox']:checked {
   background-color: red;
 }
-
 
 .sort-menu {
   position: absolute;
@@ -87,21 +83,18 @@ input[type="checkbox"]:checked {
 
   display: flex;
   flex-flow: column;
-
 }
 
 .v-enter-active,
 .v-leave-active {
   transition: all 0.3s ease;
-  pointer-events: none
+  pointer-events: none;
 }
 
 .v-enter-from,
 .v-leave-to {
-
   opacity: 0;
   transform: translateX(-50px);
-
 }
 
 p {
@@ -112,7 +105,7 @@ span {
   display: flex;
   flex-flow: row;
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     margin-right: 5px;
 
     &:checked {
@@ -132,7 +125,6 @@ span {
   margin-top: 5px;
   margin-bottom: 5px;
 
-
   :nth-child(even) {
     background-color: #212121;
   }
@@ -140,8 +132,6 @@ span {
   :nth-child(odd) {
     background-color: #252525;
   }
-
-
 }
 
 option {
@@ -149,20 +139,16 @@ option {
   font-size: 15px;
   border-radius: 0;
   border: solid 1px #3473ef;
-
 }
 
 select {
-
 }
 
 .select-items {
   padding: 10px;
-
 }
 
 .select-selected {
   background-color: #3473ef;
-
 }
 </style>

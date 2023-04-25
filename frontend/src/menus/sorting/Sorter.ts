@@ -1,4 +1,4 @@
-import { SortingMode } from '@/sorting/SortingMode'
+import { SortingMode } from '@/menus/sorting/SortingMode'
 import type { AIWorker } from '@/common/AIWorker'
 
 export class Sorter {

@@ -14,7 +14,7 @@ type Worker struct {
 	MaintenanceMode   bool     `json:"maintenance_mode"`
 	UncompletedJobs   int      `json:"uncompleted_jobs"`
 	Models            []string `json:"models"`
-	Queue             int      `json:"queue"`
+	Queue             float64  `json:"queue"`
 	Name              string   `json:"name"`
 	Type              string   `json:"type"`
 	Id                string   `json:"id"`
@@ -22,13 +22,17 @@ type Worker struct {
 	Info              string   `json:"info,omitempty"`
 }
 
-func (w Worker) GetPerformance() float32 {
+func (w *Worker) GetPerformance() float32 {
 	xp := regexp.MustCompile("[0-9.]")
 	out, err := strconv.ParseFloat(xp.FindString(w.Performance), 32)
 	if err != nil {
 		return -1
 	}
 	return float32(out)
+}
+
+func (w *Worker) SetWorker(worker *Worker) {
+	w = worker
 }
 
 //type KudosDetails struct {

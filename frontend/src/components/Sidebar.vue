@@ -1,26 +1,21 @@
 <template>
-
-  <div class='sb-content'>
+  <div class="sb-content">
     <sorting-mode-selector></sorting-mode-selector>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 export default {
   name: 'Sidebar'
 }
 </script>
 
-<script lang='ts' setup>
-
-
+<script lang="ts" setup>
 import SortingModeSelector from '@/components/SortingModeSelector.vue'
 </script>
 
-<style scoped lang='scss'>
-
+<style scoped lang="scss">
 :deep(button) {
-
   width: 100%;
   background-color: transparent;
   border: transparent;
@@ -33,12 +28,9 @@ import SortingModeSelector from '@/components/SortingModeSelector.vue'
   }
 
   &:hover {
-
     background-color: #ffffff11;
-
   }
 }
-
 
 .icon {
   width: 100%;
@@ -54,13 +46,10 @@ import SortingModeSelector from '@/components/SortingModeSelector.vue'
   justify-content: start;
   align-items: start;
 
-
   min-width: 70px;
   width: 70px;
   max-width: 70px;
 
   z-index: 5;
-
 }
-
 </style>

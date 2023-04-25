@@ -14,7 +14,7 @@ import { computed, ref } from 'vue'
 import { EventsOn, LogDebug } from '@/wailsjs/runtime'
 import Sidebar from '@/components/Sidebar.vue'
 import WorkerCard from '@/components/WorkerCard.vue'
-import Sorter from '@/sorting/Sorter'
+import Sorter from '@/menus/sorting/Sorter'
 import { useSortingModeStore } from '@/Store/Store'
 import type { data } from '@/wailsjs/go/models'
 

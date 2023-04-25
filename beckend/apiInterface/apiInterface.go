@@ -28,24 +28,25 @@ func New(ctx context.Context) ApiInterface {
 
 }
 
-func (c ApiInterface) GetTextWorkers() *[]data.TextWorker {
+func (ai ApiInterface) GetTextWorkers() *[]data.TextWorker {
 
 	var outWorkers []data.TextWorker
 
 	var modelsStatus []data.ModelStatus
 
-	c.parseJson(textWorkersURL, &outWorkers)
+	ai.parseJson(textWorkersURL, &outWorkers)
 
-	c.parseJson(textModelsStatusURL, &modelsStatus)
+	ai.parseJson(textModelsStatusURL, &modelsStatus)
 
 	// assign queued jobs to workers. If model is not found set queue to -1.
+
 	for i := range outWorkers {
 		wk := &outWorkers[i]
 		wk.Queue = -1
 		for j := range modelsStatus {
 			ms := &modelsStatus[j]
 			if wk.Models[0] == ms.Name {
-				wk.Queue = int(ms.Queued)
+				wk.Queue = ms.Queued
 				break
 			}
 		}
@@ -54,15 +55,15 @@ func (c ApiInterface) GetTextWorkers() *[]data.TextWorker {
 	return &outWorkers
 }
 
-func (c ApiInterface) GetImageWorkers() *[]data.ImageWorker {
+func (ai ApiInterface) GetImageWorkers() *[]data.ImageWorker {
 
 	var outWorkers []data.ImageWorker
 
 	var modelsStatus []data.ModelStatus
 
-	c.parseJson(imageWorkersURL, &outWorkers)
+	ai.parseJson(imageWorkersURL, &outWorkers)
 
-	c.parseJson(imageModelsStatusURL, &modelsStatus)
+	ai.parseJson(imageModelsStatusURL, &modelsStatus)
 
 	// assign queued jobs to workers. If model is not found set queue to -1.
 	for i := range outWorkers {
@@ -71,7 +72,9 @@ func (c ApiInterface) GetImageWorkers() *[]data.ImageWorker {
 		for j := range modelsStatus {
 			ms := &modelsStatus[j]
 			if wk.Models[0] == ms.Name {
-				wk.Queue = int(ms.Queued)
+
+				// queue is in pixelSteps I think, so divide by 1,000,000 to get MegaPixelSteps.
+				wk.Queue = ms.Queued / 1_000_000
 				break
 			}
 		}
@@ -80,15 +83,15 @@ func (c ApiInterface) GetImageWorkers() *[]data.ImageWorker {
 	return &outWorkers
 }
 
-func (c ApiInterface) parseJson(url string, target any) {
-	r, err := c.client.Get(url)
+func (ai ApiInterface) parseJson(url string, target any) {
+	r, err := ai.client.Get(url)
 	defer r.Body.Close()
 	if err != nil {
-		runtime.LogFatalf(c.ctx, "Failed to get url: %q", err.Error())
+		runtime.LogFatalf(ai.ctx, "Failed to get url: %q", err.Error())
 	}
 
 	err = json.NewDecoder(r.Body).Decode(target)
 	if err != nil {
-		runtime.LogFatalf(c.ctx, "Failed to parse json!:\n", err.Error())
+		runtime.LogFatalf(ai.ctx, "Failed to parse json!:\n", err.Error())
 	}
 }
